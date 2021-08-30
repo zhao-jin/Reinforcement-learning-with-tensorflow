@@ -82,7 +82,7 @@ class Maze(tk.Tk, object):
 
     def reset(self):
         self.update()
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.canvas.delete(self.rect)
         origin = np.array([20, 20])
         self.rect = self.canvas.create_rectangle(
@@ -116,11 +116,11 @@ class Maze(tk.Tk, object):
         if s_ == self.canvas.coords(self.oval):
             reward = 1
             done = True
-            s_ = 'terminal'
+            #s_ = 'terminal'
         elif s_ in [self.canvas.coords(self.hell1), self.canvas.coords(self.hell2)]:
             reward = -1
             done = True
-            s_ = 'terminal'
+            #s_ = 'terminal'
         else:
             reward = 0
             done = False
@@ -128,7 +128,7 @@ class Maze(tk.Tk, object):
         return s_, reward, done
 
     def render(self):
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.update()
 
 

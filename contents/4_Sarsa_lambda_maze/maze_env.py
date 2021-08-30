@@ -28,11 +28,11 @@ MAZE_W = 4  # grid width
 
 
 class Maze(tk.Tk, object):
-    def __init__(self):
+    def __init__(self, title='maze'):
         super(Maze, self).__init__()
         self.action_space = ['u', 'd', 'l', 'r']
         self.n_actions = len(self.action_space)
-        self.title('maze')
+        self.title(title)
         self.geometry('{0}x{1}'.format(MAZE_H * UNIT, MAZE_H * UNIT))
         self._build_maze()
 
@@ -83,7 +83,7 @@ class Maze(tk.Tk, object):
 
     def reset(self):
         self.update()
-        time.sleep(0.5)
+        time.sleep(0.05)
         self.canvas.delete(self.rect)
         origin = np.array([20, 20])
         self.rect = self.canvas.create_rectangle(
@@ -129,7 +129,7 @@ class Maze(tk.Tk, object):
         return s_, reward, done
 
     def render(self):
-        time.sleep(0.05)
+        time.sleep(0.001)
         self.update()
 
 

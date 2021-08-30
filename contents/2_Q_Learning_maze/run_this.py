@@ -44,10 +44,12 @@ def update():
     # end of game
     print('game over')
     env.destroy()
+    print('\r\nQ-table:\n')
+    print(RL.q_table)
 
 if __name__ == "__main__":
     env = Maze()
     RL = QLearningTable(actions=list(range(env.n_actions)))
 
-    env.after(100, update)
+    env.after(10, update)
     env.mainloop()
