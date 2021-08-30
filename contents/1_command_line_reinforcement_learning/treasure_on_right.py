@@ -16,10 +16,10 @@ np.random.seed(2)  # reproducible
 N_STATES = 6   # the length of the 1 dimensional world
 ACTIONS = ['left', 'right']     # available actions
 EPSILON = 0.9   # greedy police
-ALPHA = 0.1     # learning rate
+ALPHA = 0.6     # learning rate
 GAMMA = 0.9    # discount factor
 MAX_EPISODES = 13   # maximum episodes
-FRESH_TIME = 0.3    # fresh time for one move
+FRESH_TIME = 0.02    # fresh time for one move
 
 
 def build_q_table(n_states, actions):
@@ -81,11 +81,20 @@ def rl():
         step_counter = 0
         S = 0
         is_terminated = False
-        update_env(S, episode, step_counter)
+
         while not is_terminated:
 
+            # fresh env
+            update_env(S, episode, step_counter)
+            step_counter += 1
+
+            # RL Choose action base on observation
             A = choose_action(S, q_table)
+
+            # RL take action and get next observation and reward
             S_, R = get_env_feedback(S, A)  # take action & get next state and reward
+
+            # RL learn from this transition
             q_predict = q_table.loc[S, A]
             if S_ != 'terminal':
                 q_target = R + GAMMA * q_table.iloc[S_, :].max()   # next state is not terminal
@@ -93,11 +102,12 @@ def rl():
                 q_target = R     # next state is terminal
                 is_terminated = True    # terminate this episode
 
+            print("\r\n________________________")
+            print(S, A, S_, q_target, q_predict)
             q_table.loc[S, A] += ALPHA * (q_target - q_predict)  # update
             S = S_  # move to next state
-
-            update_env(S, episode, step_counter+1)
-            step_counter += 1
+            print(q_table)
+        update_env(S, episode, step_counter)
     return q_table
 
 
